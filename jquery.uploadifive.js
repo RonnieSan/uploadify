@@ -1,5 +1,5 @@
 /*
-UploadiFive 1.2.2
+UploadiFive 1.2.3
 Copyright (c) 2012 Reactive Apps, Ronnie Garcia
 Released under the UploadiFive Standard License <http://www.uploadify.com/uploadifive-standard-license>
 */
@@ -80,6 +80,12 @@ Released under the UploadiFive Standard License <http://www.uploadify.com/upload
                     'onUploadFile'     : function(file) {},                        // Triggered for each file being uploaded
                     */
                 }, options);
+
+                // Create an array of file types
+                var file_types;
+                if (settings.fileType) {
+                    file_types = settings.fileType.split('|');
+                }
 
                 // Calculate the file size limit
                 if (isNaN(settings.fileSizeLimit)) {
@@ -172,6 +178,10 @@ Released under the UploadiFive Standard License <http://www.uploadify.com/upload
 
                 // Drop a file into the queue
                 $data.drop = function(e) {
+                    // Stop FireFox from opening the dropped file(s)
+                    e.preventDefault();
+                    e.stopPropagation();
+
                     $data.queue.selected = 0;
                     $data.queue.replaced = 0;
                     $data.queue.errors   = 0;
@@ -197,6 +207,9 @@ Released under the UploadiFive Standard License <http://www.uploadify.com/upload
                         for (var n = 0; n < limit; n++) {
                             file = fileData.files[n];
                             $data.addQueueItem(file);
+                            if (file_types && file_types.indexOf(file.type) === -1) {
+                                $data.error('FORBIDDEN_FILE_TYPE', file);
+                            }
                         }
                         // Save the data to the inputs object
                         $data.inputs[inputName] = fileData;
@@ -211,10 +224,6 @@ Released under the UploadiFive Standard License <http://www.uploadify.com/upload
                     if (typeof settings.onDrop === 'function') {
                         settings.onDrop.call($this, fileData.files, fileData.files.length);
                     }
-
-                    // Stop FireFox from opening the dropped file(s)
-                    e.preventDefault();
-                    e.stopPropagation();
                 };
 
                 // Check if a filename exists in the queue

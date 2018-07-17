@@ -1,5 +1,8 @@
 UploadiFive Change Log
 
+v1.2.3
+* Fixed file type option when dropping files
+
 v1.1.2
 * Fixed typo on line 424 'uplaodAll' => 'uploadAll'
 

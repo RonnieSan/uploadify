@@ -1,5 +1,5 @@
 /*
-UploadiFive 1.2.2
+UploadiFive 1.2.3
 Copyright (c) 2012 Reactive Apps, Ronnie Garcia
 Released under the UploadiFive Standard License <http://www.uploadify.com/uploadifive-standard-license>
 */

@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  uploadifive:
+    container_name: uploadifive
+    build:
+      context: .
+    volumes:
+      - .:/var/www/html
+    ports:
+      - '80:80'

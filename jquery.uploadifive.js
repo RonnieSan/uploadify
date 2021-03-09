@@ -298,6 +298,10 @@ Released under the MIT License
                     if (typeof settings.onAddQueueItem === 'function') {
                         settings.onAddQueueItem.call($this, file);
                     }
+					// Check the filetype
+					if (file_types && file_types.indexOf(file.type) === -1) {
+						$data.error('FORBIDDEN_FILE_TYPE', file);
+					}
                     // Check the filesize
                     if (file.size > settings.fileSizeLimit && settings.fileSizeLimit !== 0) {
                         $data.error('FILE_SIZE_LIMIT_EXCEEDED', file);

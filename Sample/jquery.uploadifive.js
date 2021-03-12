@@ -1,7 +1,7 @@
 /*
 UploadiFive 1.2.3
 Copyright (c) 2012 Reactive Apps, Ronnie Garcia
-Released under the UploadiFive Standard License <http://www.uploadify.com/uploadifive-standard-license>
+Released under the MIT License
 */
 ;(function($) {
 
@@ -45,7 +45,7 @@ Released under the UploadiFive Standard License <http://www.uploadify.com/upload
                     'dropTarget'      : false,              // Selector for the drop target
                     'fileObjName'     : 'Filedata',         // The name of the file object to use in your server-side script
                     'fileSizeLimit'   : 0,                  // Maximum allowed size of files to upload
-                    'fileType'        : false,              // Type of files allowed (image, etc), separate with a pipe character |
+                    'fileType'        : false,              // Extension of files allowed (.zip,.rar,.7z,.pdf,...ETC.), separate with a comma character ,
                     'formData'        : {},                 // Additional data to send to the upload script
                     'height'          : 30,                 // The height of the button
                     'itemTemplate'    : false,              // The HTML markup for the item in the queue
@@ -84,7 +84,7 @@ Released under the UploadiFive Standard License <http://www.uploadify.com/upload
                 // Create an array of file types
                 var file_types;
                 if (settings.fileType) {
-                    file_types = settings.fileType.split('|');
+                    file_types = settings.fileType.split(',');
                 }
 
                 // Calculate the file size limit
@@ -207,9 +207,11 @@ Released under the UploadiFive Standard License <http://www.uploadify.com/upload
                         for (var n = 0; n < limit; n++) {
                             file = fileData.files[n];
                             $data.addQueueItem(file);
-                            if (file_types && file_types.indexOf(file.type) === -1) {
-                                $data.error('FORBIDDEN_FILE_TYPE', file);
-                            }
+                            // Check the filetype
+							if (file_types) {
+								if(file_types.indexOf(file.name.substring(file.name.lastIndexOf('.')))<0)
+									$data.error('FORBIDDEN_FILE_TYPE', file);
+							}
                         }
                         // Save the data to the inputs object
                         $data.inputs[inputName] = fileData;
@@ -297,6 +299,11 @@ Released under the UploadiFive Standard License <http://www.uploadify.com/upload
                     // Trigger the addQueueItem event
                     if (typeof settings.onAddQueueItem === 'function') {
                         settings.onAddQueueItem.call($this, file);
+                    }
+					// Check the filetype
+					if (file_types) {
+						if(file_types.indexOf(file.name.substring(file.name.lastIndexOf('.')))<0)
+							$data.error('FORBIDDEN_FILE_TYPE', file);
                     }
                     // Check the filesize
                     if (file.size > settings.fileSizeLimit && settings.fileSizeLimit !== 0) {

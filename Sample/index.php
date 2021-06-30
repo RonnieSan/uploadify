@@ -39,7 +39,7 @@ body {
 			$('#file_upload').uploadifive({
 				'auto'             : false,
 				'checkScript'      : 'check-exists.php',
-				'fileType'         : 'image/png',
+				'fileType'         : '.jpg,.jpeg,.gif,.png',
 				'formData'         : {
 									   'timestamp' : '<?php echo $timestamp;?>',
 									   'token'     : '<?php echo md5('unique_salt' . $timestamp);?>'

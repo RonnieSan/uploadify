@@ -8,7 +8,7 @@ Released under the MIT License
     var methods = {
 
         init : function(options) {
-            
+
             return this.each(function() {
 
                 // Create a reference to the jQuery DOM object
@@ -40,7 +40,7 @@ Released under the MIT License
                     'auto'            : true,               // Automatically upload a file when it's added to the queue
                     'buttonClass'     : false,              // A class to add to the UploadiFive button
                     'buttonText'      : 'Select Files',     // The text that appears on the UploadiFive button
-                    'checkScript'     : false,              // Path to the script that checks for existing file names 
+                    'checkScript'     : false,              // Path to the script that checks for existing file names
                     'dnd'             : true,               // Allow drag and drop into the queue
                     'dropTarget'      : false,              // Selector for the drop target
                     'fileObjName'     : 'Filedata',         // The name of the file object to use in your server-side script
@@ -109,7 +109,7 @@ Released under the MIT License
                     'position'  : 'absolute',
                     'right'     : '-3px',
                     'top'       : '-3px',
-                    'z-index'   : 999 
+                    'z-index'   : 999
                 });
 
                 // Create a new input
@@ -128,7 +128,7 @@ Released under the MIT License
                         input.attr('accept', settings.fileType);
                     }
                     // Set the onchange event for the input
-                    input.bind('change', function() {
+                    input.on('change', function() {
                         $data.queue.selected = 0;
                         $data.queue.replaced = 0;
                         $data.queue.errors   = 0;
@@ -283,7 +283,7 @@ Released under the MIT License
                         // Add an ID to the queue item
                         file.queueItem.attr('id', settings.id + '-file-' + $data.fileID++);
                         // Bind the close event to the close button
-                        file.queueItem.find('.close').bind('click', function() {
+                        file.queueItem.find('.close').on('click', function() {
                            methods.cancel.call($this, file);
                            return false;
                         });
@@ -306,7 +306,7 @@ Released under the MIT License
 							$data.error('FORBIDDEN_FILE_TYPE', file);
                     }
                     // Check the filesize
-                    if (file.size > settings.fileSizeLimit && settings.fileSizeLimit !== 0) {
+                    if (file.length > settings.fileSizeLimit && settings.fileSizeLimit !== 0) {
                         $data.error('FILE_SIZE_LIMIT_EXCEEDED', file);
                     } else {
                         $data.queue.queued++;
@@ -445,7 +445,7 @@ Released under the MIT License
                                     eol      = '\r\n',
                                     binFile  = '';
 
-                                // Build an RFC2388 String 
+                                // Build an RFC2388 String
                                 binFile += dashes + boundary + eol;
                                 // Generate the headers
                                 binFile += 'Content-Disposition: form-data; name="' + settings.fileObjName + '"';
@@ -476,11 +476,11 @@ Released under the MIT License
                                     if (status == 404) {
                                         $data.error('404_FILE_NOT_FOUND', file, uploadAll);
                                     } else {
-                                        if (file.xhr.responseText != 'Invalid file type.') {    
+                                        if (file.xhr.responseText != 'Invalid file type.') {
                                             $data.uploadComplete(e, file, uploadAll);
                                         } else {
                                             $data.error(file.xhr.responseText, file, uploadAll);
-                                        } 
+                                        }
                                     }
                                 }, false);
 
@@ -549,7 +549,7 @@ Released under the MIT License
                         file.queueItem.addClass('error')
                         // Output the error in the queue item
                         .find('.fileinfo').html(' - ' + errorMsg);
-                        // Hide the 
+                        // Hide the
                         file.queueItem.find('.progress').remove();
                     }
                     // Trigger the error event
@@ -616,10 +616,10 @@ Released under the MIT License
                     // Style the button wrapper
                     $data.button.css({
                         'height'      : settings.height,
-                        'line-height' : settings.height + 'px', 
+                        'line-height' : settings.height + 'px',
                         'overflow'    : 'hidden',
                         'position'    : 'relative',
-                        'text-align'  : 'center', 
+                        'text-align'  : 'center',
                         'width'       : settings.width
                     });
 
@@ -766,9 +766,9 @@ Released under the MIT License
                 if (typeof settings.onCancel === 'function') {
                     settings.onCancel.call($this, file);
                 }
-                
+
             });
-            
+
         },
 
         // Upload the files in the queue
@@ -818,7 +818,7 @@ Released under the MIT License
                                 $data.uploadFile(_file, true);
                             }
                         });
-                        if ($('#' + settings.queueID).find('.uploadifive-queue-item').not('.error, .complete').size() === 0) {
+                        if ($('#' + settings.queueID).find('.uploadifive-queue-item').not('.error, .complete').length() === 0) {
                             $data.queueComplete();
                         }
                     } else {
@@ -849,7 +849,7 @@ Released under the MIT License
                 var $this    = $(this),
                     $data    = $this.data('uploadifive'),
                     settings = $data.settings;
-            
+
                 // Clear the queue
                 methods.clearQueue.call($this);
                 // Destroy the queue if it was created
